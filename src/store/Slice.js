@@ -5,6 +5,7 @@ const initialState = {
   alldatasearch: [],
   category: [],
   cartdata: [],
+  wishlistdata:[],
   incre: Array(100).fill(1),
   cartincre: [],
   price: [],
@@ -13,16 +14,17 @@ const initialState = {
   pricedisc: [],
   netprice: [],
   nettotal: 0,
-  searchitem:[],
-  status: "Add to Cart"
-
+  searchitem: [],
+  status: "Add to Cart",
+  wishstatus: "Add to Cart",
+  temp: []
 }
 
 export const ecomSlice = createSlice({
   name: 'ecom',
   initialState,
   reducers: {
-  
+
     datahandler: (state, action) => {
       // Access 'alldata' from the state object
       const updatedAlldata = action.payload.map(item => ({
@@ -51,9 +53,9 @@ export const ecomSlice = createSlice({
           ele.brand.toLowerCase().includes(searchTerm)
         );
       });
-     
+
     },
-   
+
     carthandler: (state, action) => {
 
       let check = false;
@@ -71,30 +73,86 @@ export const ecomSlice = createSlice({
         // state.status = "go to cart"
         alert('already in cart')
       } else {
-        const existingItem = state.cartdata.find(item => item.id === action.payload.ele.id);
+        return {
+          ...state,
+          cartdata: [...state.cartdata, action.payload.ele],
+          price: [...state.price, action.payload.ele.price],
+          allprice: [...state.allprice, action.payload.ele.price],
+          totalprice: state.totalprice + action.payload.ele.price,
+          pricedisc: [
+            ...state.pricedisc,
+            action.payload.ele.price - (action.payload.ele.discountPercentage * action.payload.ele.price) / 100
+          ],
+          netprice: [
+            ...state.netprice,
+            action.payload.ele.price - (action.payload.ele.discountPercentage * action.payload.ele.price) / 100
+          ],
+          nettotal: state.nettotal + (action.payload.ele.price - (action.payload.ele.discountPercentage * action.payload.ele.price) / 100)
+        };
+      }
 
-        if (existingItem) {
-          console.log(existingItem);
-          return { ...state, dispatchincrement: true };
+    },
+    wishlistdata: (state, action) => {
+
+      let check = false;
+      for (let i = 0; i < state.wishlistdata.length; i++) {
+        if (state.wishlistdata[i].id === action.payload.ele.id) {
+          check = true;
         } else {
-          return {
-            ...state,
-            cartdata: [...state.cartdata, action.payload.ele],
-            price: [...state.price, action.payload.ele.price],
-            allprice: [...state.allprice, action.payload.ele.price],
-            totalprice: state.totalprice + action.payload.ele.price,
-            pricedisc: [
-              ...state.pricedisc,
-              action.payload.ele.price - (action.payload.ele.discountPercentage * action.payload.ele.price) / 100
-            ],
-            netprice: [
-              ...state.netprice,
-              action.payload.ele.price - (action.payload.ele.discountPercentage * action.payload.ele.price) / 100
-            ],
-            nettotal: state.nettotal + (action.payload.ele.price - (action.payload.ele.discountPercentage * action.payload.ele.price) / 100)
-          };
+          check = false;
+        }
+        if (check == true) {
+          break;
         }
       }
+      if (check == true) {
+        // state.status = "go to cart"
+        alert('already in wishlist')
+      } else {
+
+        return {
+          ...state,
+          wishlistdata: [...state.wishlistdata, action.payload.ele],
+          // price: [...state.price, action.payload.ele.price],
+          // allprice: [...state.allprice, action.payload.ele.price],
+          // totalprice: state.totalprice + action.payload.ele.price,
+          // pricedisc: [
+          //   ...state.pricedisc,
+          //   action.payload.ele.price - (action.payload.ele.discountPercentage * action.payload.ele.price) / 100
+          // ],
+          // netprice: [
+          //   ...state.netprice,
+          //   action.payload.ele.price - (action.payload.ele.discountPercentage * action.payload.ele.price) / 100
+          // ],
+          // nettotal: state.nettotal + (action.payload.ele.price - (action.payload.ele.discountPercentage * action.payload.ele.price) / 100)
+        };
+      }
+
+
+    },
+    removiewishlist: (state, action) => {
+
+      state.wishlistdata = state.wishlistdata.filter((ele, ind) => {
+        return ind !== action.payload.ind;
+      })
+      // console.log(state.cartdata);
+      // state.price = state.price.filter((ele, ind) => {
+      //   return ind !== action.payload.ind;
+      // })
+      // state.incre = state.incre.filter((ele, ind) => {
+      //   return ind !== action.payload.ind;
+      // })
+      // state.allprice = state.allprice.filter((ele, ind) => {
+      //   return ind !== action.payload.ind;
+      // })
+      // state.pricedisc = state.pricedisc.filter((ele, ind) => {
+      //   return ind !== action.payload.ind;
+      // })
+      // state.netprice = state.netprice.filter((ele, ind) => {
+      //   return ind !== action.payload.ind;
+      // })
+      // console.log(state.data);
+      // console.log(action.payload.price);
 
     },
     increment: (state, action) => {
@@ -125,7 +183,7 @@ export const ecomSlice = createSlice({
 
     decrement: (state, action) => {
       if (state.incre[action.payload.ind] === 0) {
-       
+
         return { ...state, dispatchRemoveCart: true };
       } else {
         state.incre[action.payload.ind] -= 1;
@@ -163,9 +221,12 @@ export const ecomSlice = createSlice({
       console.log(action.payload.price);
 
     },
+    filterdata: (state, action) => {
+      state.temp = action.payload;
+    }
   },
 })
 
-export const { increment, datahandler, datacategory, searchdata, allitems, carthandler, decrement, removecart } = ecomSlice.actions
+export const { increment, datahandler, wishlistdata,removiewishlist, datacategory, filterdata, searchdata, allitems, carthandler, decrement, removecart } = ecomSlice.actions
 
 export default ecomSlice.reducer

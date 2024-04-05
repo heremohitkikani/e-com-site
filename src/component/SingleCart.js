@@ -18,7 +18,7 @@ import Header from './Header';
 
 
 export default function Singlecart() {
-  const id = useParams();
+  const params = useParams();
   let singledata = useSelector((state) => state.data.alldata)
   // const dispatch = useDispatch()
   console.log(singledata);
@@ -37,33 +37,55 @@ export default function Singlecart() {
 
           singledata.map((ele, ind) => {
             return (
-              ele.id == id.id ?
-                <div className='flex '>
-                  <div className='basis-2/12 mx-auto'>
+              ele.id == params.id ?
+                <div className='lg:flex '>
+                  <div className='lg:w-2/12 mx-auto'>
                     {
                       ele.images.map((ele) => {
                         return (
 
-                          <div className='my-3 getimg-hover ' >
-                            <img src={ele} className='w-24 h-24 mx-auto ' onClick={() => dataimage(ele, ind)} style={{ cursor: 'pointer' }} ></img>
+                          <div className='my-3 smallimg' >
+                            <img src={ele} className='w-20 h-20 mx-auto ' onClick={() => dataimage(ele)} style={{ cursor: 'pointer' }} ></img>
                           </div>
 
                         )
                       })
                     }
                   </div>
-                  <div className='basis-6/12'>
-                    <img src={img ? img : ele.thumbnail} className='mx-auto' style={{ borderRadius: '20px', width: '60%',height:'', objectFit: 'cover',backgroundPosition: 'center' }}></img>
+                  <div className='lg:w-6/12 flex items-center '>
+                    <img src={img ? img : ele.thumbnail} className=' mx-auto max-h-[300px] object-contain' ></img>
                   </div>
-                  <div className='basis-4/12'>
+                  <div className='lg:w-4/12'>
                     <h5 className='mt-3' style={{ fontFamily: 'forte' }}> {ele.title} : -</h5>
                     <p className='mt-3' style={{ lineHeight: '30px' }}><font style={{ borderBottom: '2px solid black', paddingBottom: '5px', fontFamily: 'forte' }}>About product : </font>"{ele.description}"</p>
-                    <h6 className='mt-3'>Price : $ {ele.price}  ||  Des : {ele.discountPercentage} % <i style={{ color: '#F14B17' }} className='ms-2'><IoMdPricetag  ></IoMdPricetag  > </i></h6>
-                    <h6 className='mt-3'>Rating : {ele.rating}  <i style={{ color: '#D8B338' }} className='ms-2'><FaStar></FaStar></i></h6>
-                    <h6 className='mt-3'>Stock : {ele.stock} . . . <i style={{ color: '#2B5C85' }} className='ms-2'><AiOutlineStock ></AiOutlineStock > </i></h6>
-                    <h6 className='mt-3'>Brand : {ele.brand}<i style={{ color: '#2B5C85' }} className='ms-2'><SiBrandfolder></SiBrandfolder> </i></h6>
-                    <h6 className='mt-3'>Category : {ele.category} <i style={{ color: '#CB6545' }} className='ms-2'><MdCategory></MdCategory> </i></h6>
-                 <Link to='/CartData' className='bg-orange-400 text-white p-2 mt-5'><button>BACK TO CART</button></Link>
+                    <div className='flex items-center mt-5'>
+                      <h6 className=''>Price : {ele.price} ₹ ||  Des : {ele.discountPercentage} %</h6>
+                      <i className='ms-2 text-orange-500'><IoMdPricetag  ></IoMdPricetag  > </i>
+                    </div>
+                    <div className='mt-5 flex items-center'>
+                      <h6 className='m-0'>Rating : {ele.rating}  </h6>
+                      <i className='ms-2'><FaStar></FaStar></i>
+                    </div>
+                    <div className='flex items-center mt-5'>
+                      <h6 className=''>Stock : {ele.stock} . . .</h6>
+                      <i className='ms-2 text-blue-500'><AiOutlineStock ></AiOutlineStock > </i>
+                    </div>
+                    <div className='flex items-center mt-5'>
+                      <h6 className=''>Brand : {ele.brand}</h6>
+                      <i className='ms-2 text-purple-600'><SiBrandfolder></SiBrandfolder> </i>
+                    </div>
+                    <div className='flex items-center mt-5'>
+                      <h6 className=''>Category : {ele.category} </h6>
+                      <i  className='ms-2 text-red-700'><MdCategory></MdCategory> </i>
+                    </div>
+                    
+
+                    <Link to='/CartData' className='bg-orange-400 text-white p-2 '><button className='mt-7'>BACK TO CART</button></Link>
+
+                    {/* {
+                      ele.status == 1 ? <button onClick={() => dispatch(carthandler(ele, ind1))} className='bg-orange-500 text-white py-2 px-3 mt-4 me-2'>Add to cart</button> :<Link to='/cartdata'> <button className='bg-orange-500 text-white py-2 px-3 mt-4 me-2'>go to cart</button></Link>
+                  } */}
+
                   </div>
 
                 </div>

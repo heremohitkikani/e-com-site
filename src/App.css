@@ -1,6 +1,9 @@
 .item{
     height: calc(100vh - 80px) !important;
 }
+/* .smallimg{
+  display: flex !important;
+} */
 
 .smallimg img{
     transition: .3s;

@@ -12,6 +12,7 @@ import SingleItem from './component/SingleItem';
 import CartData from './component/CartData';
 import Singlecart from './component/SingleCart';
 import SearchData from './component/SearchData';
+import Wishlist from './component/Wishlist';
 
 function App() {
   const dispatch = useDispatch()
@@ -46,6 +47,7 @@ function App() {
         <Route path="/SingleItem/:id" element={<SingleItem />} />
 
         <Route path="/Cartdata" element={<CartData />} />
+        <Route path="/Wishlist" element={<Wishlist />} />
         <Route path="/Cartdata/:id" element={<Singlecart />} />
 
 

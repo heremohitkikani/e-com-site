@@ -5,10 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { searchdata } from '../store/Slice';
 import { useDispatch, useSelector } from 'react-redux';
 import Category from './Category';
+import Price from './Price';
 
 function Header() {
   let navigate = useNavigate();
   let cartlength = useSelector((state) => state.data.cartdata.length);
+  let wishlistdata = useSelector((state) => state.data.wishlistdata.length);
   let [search, setser] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
@@ -59,12 +61,12 @@ function Header() {
         {/* Icons */}
         <div className='hidden md:flex text-2xl text-gray-600 items-center'>
           <div className='ms-2 flex items-center'>
-            <Link to='/CartData' className='hover:scale-125 transition'>
+            <Link to='/Wishlist' className='hover:scale-125 transition'>
               <a href='' className='text-gray-500 hover:text-orange-400 transition'>
                 <FaRegHeart />
               </a>
             </Link>
-            <p className='m-0 ms-2'> | 0 |</p>
+            <p className='m-0 ms-2'> | {wishlistdata} |</p>
           </div>
           <div className='ms-2 hidden md:flex items-center'>
             <Link to='/CartData' className='hover:scale-125 transition'>
@@ -122,12 +124,12 @@ function Header() {
             </div>
             <div className='flex text-2xl text-gray-600 items-center mb-4'>
               <div className='ms-2 flex items-center'>
-                <Link to='/CartData' className='hover:scale-125 transition'>
+                <Link to='/Wishlist' className='hover:scale-125 transition'>
                   <a href='' className='text-gray-500 hover:text-orange-400 transition'>
                     <FaRegHeart />
                   </a>
                 </Link>
-                <p className='m-0 ms-2'> | 0 |</p>
+                <p className='m-0 ms-2'> | {wishlistdata} |</p>
               </div>
               <div className='ms-2 flex items-center'>
                 <Link to='/CartData' className='hover:scale-125 transition'>
